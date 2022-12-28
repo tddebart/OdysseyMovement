@@ -1,0 +1,12 @@
+{
+    "title": "Odyssey Movement",
+    "description": "",
+    "type": "servercontent",
+    "tags": [
+        "fun"
+    ],
+    "ignore": [
+        ".git/*",
+        "README.md"
+    ]
+}
