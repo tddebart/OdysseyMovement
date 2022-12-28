@@ -56,6 +56,7 @@ end
 
 --#endregion
 
+--#region LongJump
 function PLAYER:GetIsLongJumping()
     return self:GetDTBool(3)
 end
@@ -64,13 +65,44 @@ function PLAYER:SetIsLongJumping(bool)
     self:SetDTBool(3, bool)
 end
 
-function PLAYER:GetMaxSpeedOverride(ply)
+--#endregion
+
+function PLAYER:GetMaxSpeedOverride()
     return self:GetDTInt(2)
 end
 
-function PLAYER:SetMaxSpeedOverride(ply, speed)
+function PLAYER:SetMaxSpeedOverride(speed)
     self:SetDTInt(2, speed)
 end
 
 
+--#region Dive
+
+function PLAYER:GetIsDiving()
+    return self:GetDTBool(4)
+end
+
+function PLAYER:SetIsDiving(bool)
+    self:SetDTBool(4, bool)
+end
+
+--#endregion
+
+--#region GroundPound
+
+function PLAYER:GetFreezePlayer()
+    return self:GetDTBool(6)
+end
+
+function PLAYER:SetFreezePlayer(bool)
+    self:SetDTBool(6, bool)
+end
+
+function PLAYER:GetIsGroundPounding()
+    return self:GetDTBool(5)
+end
+
+function PLAYER:SetIsGroundPounding(bool)
+    self:SetDTBool(5, bool)
+end
 

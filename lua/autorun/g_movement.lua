@@ -1,13 +1,13 @@
 // convars
 CreateConVar('odysseyMovement_roll_maxVelocity', 450, 'The maximum velocity you can get from rolling')
 
-CreateConVar('odysseyMovement_walljump_launchVelocityAway', -250, 'The horizontal velocity you get when walljumping away from the wall')
+CreateConVar('odysseyMovement_walljump_launchVelocityAway', -300, 'The horizontal velocity you get when walljumping away from the wall')
 CreateConVar('odysseyMovement_walljump_launchVelocityUp', 250, 'The upwards velocity you get when walljumping away from the wall')
 
-CreateConVar('odysseyMovement_backflip_height', 500.0, 'The height of the backflip')
+CreateConVar('odysseyMovement_backflip_height', 400.0, 'The height of the backflip')
 
 CreateConVar('odysseyMovement_longjump_height', 600.0, 'The height of the longjump')
-CreateConVar('odysseyMovement_longjump_distance', 400.0, 'The distance of the longjump')
+CreateConVar('odysseyMovement_longjump_distance', 300.0, 'The distance of the longjump')
 
 hook.Add('Move', 'OdyMove', function(ply, mv)
 
@@ -23,6 +23,10 @@ hook.Add('Move', 'OdyMove', function(ply, mv)
         jumped(ply,mv)
     end
 
+    if ply:KeyPressed(IN_DUCK) then
+        ducked(ply,mv)
+    end
+
     // if we press the use key
     if ply:KeyPressed(IN_USE) then
         use(ply, mv)
@@ -36,14 +40,15 @@ hook.Add('Move', 'OdyMove', function(ply, mv)
         wallJumpCheck(ply, mv)
     end
 
-end)
+    if ply:GetMaxSpeedOverride() != 0 then
+        local maxSpeedOverride = ply:GetMaxSpeedOverride()
+        mv:SetMaxClientSpeed(maxSpeedOverride-1)
+        mv:SetMaxSpeed(maxSpeedOverride-1)
+    end
 
-hook.Add('FinishMove', 'OdyFinishMove', function(ply, mv)
-    local maxSpeedOverride = ply:GetMaxSpeedOverride()
+    if ply:GetFreezePlayer() then
 
-    if maxSpeedOverride != 0 then
-        mv:SetMaxClientSpeed(maxSpeedOverride)
-        mv:SetMaxSpeed(maxSpeedOverride)
+        return true
     end
 end)
 
@@ -57,8 +62,31 @@ function inAir (ply, mv)
 end
 
 function landed (ply, mv)
+
+
+    if ply:GetIsGroundPounding() then
+        ply:SetRollVelocity(GetConVar('odysseyMovement_roll_maxVelocity'):GetInt())
+
+        // Force crouch by +duck and -duck
+        // TODO: need to find a way to force crouch without using concommands
+        // because then you can't use the crouch key to uncrouch
+        // ply:ConCommand('+duck')
+
+        timer.Simple(0.7, function()
+            ply:SetIsGroundPounding(false)
+
+            ply:SetMaxSpeedOverride(0)
+            if not ply:GetRollUpdate() then
+                // ply:ConCommand('-duck')
+            end
+        end)
+    end
+
     ply:SetWallJumpUpdate(false)
     ply:SetWallDirection(Vector(0,0,0))
+
+    ply:SetIsLongJumping(false)
+    ply:SetIsDiving(false)
 end
 
 function jumped (ply, mv)
@@ -74,20 +102,17 @@ function jumped (ply, mv)
     if not ply:IsOnGround() then return end
 
     // Backflip or longjump
-    if ply:Crouching() then
-        local pos = ply:GetPos()
+    if (ply:Crouching() || ply:KeyDown(IN_DUCK)) and not ply:GetIsGroundPounding() then
         local vel = mv:GetVelocity()
         local vec = ply:GetAimVector()
         vec.z = 0
         local len = -100.0
 
-        if math.abs(vel.x) + math.abs(vel.y) < 30 then // Backflip
-            print('backflip')
+        if math.abs(vel.x) + math.abs(vel.y) < 100 and ply:Crouching() then // Backflip
             vec.z = GetConVar('odysseyMovement_backflip_height'):GetFloat() / len
 
             mv:SetVelocity(vec * len)
-        else // Longjump
-            print(vec)
+        elseif ply:KeyDown(IN_DUCK) then // Longjump
             len = GetConVar('odysseyMovement_longjump_distance'):GetFloat()
             vec.z = GetConVar('odysseyMovement_longjump_height'):GetFloat() / len
             ply:SetIsLongJumping(true)
@@ -96,6 +121,23 @@ function jumped (ply, mv)
         end
 
     end
+end
+
+function ducked (ply, mv)
+    // Groundpound
+    if not ply:IsOnGround() and not ply:GetIsLongJumping() and not ply:GetIsDiving() then
+        ply:SetIsGroundPounding(true)
+        ply:SetMaxSpeedOverride(1)
+        ply:SetFreezePlayer(true)
+        mv:SetVelocity(Vector(0,0,0))
+        timer.Simple(0.3, function()
+            if ply:GetIsGroundPounding() then
+                ply:SetFreezePlayer(false)
+                ply:SetVelocity(Vector(0,0,-500))
+            end
+        end)
+    end
+
 end
 
 function use (ply, mv)
