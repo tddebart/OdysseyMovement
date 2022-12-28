@@ -4,6 +4,11 @@ CreateConVar('odysseyMovement_roll_maxVelocity', 450, 'The maximum velocity you 
 CreateConVar('odysseyMovement_walljump_launchVelocityAway', -250, 'The horizontal velocity you get when walljumping away from the wall')
 CreateConVar('odysseyMovement_walljump_launchVelocityUp', 250, 'The upwards velocity you get when walljumping away from the wall')
 
+CreateConVar('odysseyMovement_backflip_height', 500.0, 'The height of the backflip')
+
+CreateConVar('odysseyMovement_longjump_height', 600.0, 'The height of the longjump')
+CreateConVar('odysseyMovement_longjump_distance', 400.0, 'The distance of the longjump')
+
 hook.Add('Move', 'OdyMove', function(ply, mv)
 
     if not ply:GetPreviousIsOnGround() and ply:IsOnGround() then
@@ -33,6 +38,15 @@ hook.Add('Move', 'OdyMove', function(ply, mv)
 
 end)
 
+hook.Add('FinishMove', 'OdyFinishMove', function(ply, mv)
+    local maxSpeedOverride = ply:GetMaxSpeedOverride()
+
+    if maxSpeedOverride != 0 then
+        mv:SetMaxClientSpeed(maxSpeedOverride)
+        mv:SetMaxSpeed(maxSpeedOverride)
+    end
+end)
+
 function inAir (ply, mv)
     // Check if we need to update the walljump
     if not ply:GetWallJumpUpdate() then
@@ -58,6 +72,30 @@ function jumped (ply, mv)
     end
 
     if not ply:IsOnGround() then return end
+
+    // Backflip or longjump
+    if ply:Crouching() then
+        local pos = ply:GetPos()
+        local vel = mv:GetVelocity()
+        local vec = ply:GetAimVector()
+        vec.z = 0
+        local len = -100.0
+
+        if math.abs(vel.x) + math.abs(vel.y) < 30 then // Backflip
+            print('backflip')
+            vec.z = GetConVar('odysseyMovement_backflip_height'):GetFloat() / len
+
+            mv:SetVelocity(vec * len)
+        else // Longjump
+            print(vec)
+            len = GetConVar('odysseyMovement_longjump_distance'):GetFloat()
+            vec.z = GetConVar('odysseyMovement_longjump_height'):GetFloat() / len
+            ply:SetIsLongJumping(true)
+
+            ply:SetVelocity(vec * len)
+        end
+
+    end
 end
 
 function use (ply, mv)

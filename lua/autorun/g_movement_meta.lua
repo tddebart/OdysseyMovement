@@ -54,5 +54,23 @@ function PLAYER:SetWallJumpUpdate(bool)
     self:SetDTBool(2, bool)
 end
 
+--#endregion
+
+function PLAYER:GetIsLongJumping()
+    return self:GetDTBool(3)
+end
+
+function PLAYER:SetIsLongJumping(bool)
+    self:SetDTBool(3, bool)
+end
+
+function PLAYER:GetMaxSpeedOverride(ply)
+    return self:GetDTInt(2)
+end
+
+function PLAYER:SetMaxSpeedOverride(ply, speed)
+    self:SetDTInt(2, speed)
+end
+
 
 
