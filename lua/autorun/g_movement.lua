@@ -103,11 +103,10 @@ function jumped (ply, mv)
     if ply:GetIsGroundPounding() then
         ply:ConCommand('-duck')
         mv:SetVelocity(Vector(0,0,400))
-
     end
 
     // Backflip or longjump
-    if (ply:Crouching() || ply:KeyDown(IN_DUCK)) and not ply:GetIsGroundPounding() then
+    if (ply:Crouching() or ply:KeyDown(IN_DUCK)) and not ply:GetIsGroundPounding() then
         local vel = mv:GetVelocity()
         local vec = ply:GetAimVector()
         vec.z = 0
@@ -131,9 +130,9 @@ end
 function ducked (ply, mv)
     // Groundpound
     if not ply:IsOnGround() and not ply:GetIsLongJumping() and not ply:GetIsDiving() then
-        ply:SetIsGroundPounding(true)
         ply:SetMaxSpeedOverride(1)
         ply:SetFreezePlayer(true)
+        ply:SetIsGroundPounding(true)
         mv:SetVelocity(Vector(0,0,0))
         timer.Simple(0.3, function()
             if ply:GetIsGroundPounding() then
@@ -157,6 +156,19 @@ function use (ply, mv)
             ply:SetRollUpdate(true)
             roll(ply, mv)
         end
+    elseif ply:GetIsGroundPounding() and not ply:IsOnGround() then // Dive
+        print('dive')
+        ply:SetFreezePlayer(false)
+        ply:SetMaxSpeedOverride(0)
+        local vec = ply:GetAimVector()
+        vec.z = 0
+        vec = vec:GetNormalized()
+        vec = vec * 350 + Vector(0,0,150)
+        mv:SetVelocity(vec)
+
+        ply:SetIsGroundPounding(false)
+        ply:ConCommand('-duck')
+        ply:SetIsDiving(true)
     end
 end
 
