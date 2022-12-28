@@ -3,13 +3,10 @@ print('Setup movement for odyssey')
 -- convars
 CreateConVar('odysseyMovement_roll_maxVelocity', 600, 'The maximum velocity you can get from rolling')
 
-CreateConVar('odysseyMovement_walljump_launchVelocityAway', -200, 'The horizontal velocity you get when walljumping away from the wall')
-CreateConVar('odysseyMovement_walljump_launchVelocityUp', 200, 'The upwards velocity you get when walljumping away from the wall')
+CreateConVar('odysseyMovement_walljump_launchVelocityAway', -250, 'The horizontal velocity you get when walljumping away from the wall')
+CreateConVar('odysseyMovement_walljump_launchVelocityUp', 250, 'The upwards velocity you get when walljumping away from the wall')
 
 hook.Add('Move', 'OdyMove', function(ply, mv)
-    local vel = mv:GetVelocity()
-
-
 
     if not ply:GetPreviousIsOnGround() and ply:IsOnGround() then
         landed(ply,mv)
@@ -76,6 +73,7 @@ end
 
 function wallJumpCheck (ply, mv)
     local pos = ply:EyePos()
+    pos.z = pos.z - 25
     local vel = mv:GetVelocity()
     local wallDir = ply:GetWallDirection()
 
