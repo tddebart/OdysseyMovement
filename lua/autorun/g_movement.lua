@@ -70,15 +70,13 @@ function landed (ply, mv)
         // Force crouch by +duck and -duck
         // TODO: need to find a way to force crouch without using concommands
         // because then you can't use the crouch key to uncrouch
-        // ply:ConCommand('+duck')
+        ply:ConCommand('+duck')
 
         timer.Simple(0.7, function()
             ply:SetIsGroundPounding(false)
 
             ply:SetMaxSpeedOverride(0)
-            if not ply:GetRollUpdate() then
-                // ply:ConCommand('-duck')
-            end
+            ply:ConCommand('-duck')
         end)
     end
 
@@ -100,6 +98,13 @@ function jumped (ply, mv)
     end
 
     if not ply:IsOnGround() then return end
+
+    // Ground pound jump
+    if ply:GetIsGroundPounding() then
+        ply:ConCommand('-duck')
+        mv:SetVelocity(Vector(0,0,400))
+
+    end
 
     // Backflip or longjump
     if (ply:Crouching() || ply:KeyDown(IN_DUCK)) and not ply:GetIsGroundPounding() then
