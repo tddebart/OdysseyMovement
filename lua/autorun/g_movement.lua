@@ -1,7 +1,5 @@
-print('Setup movement for odyssey')
-
--- convars
-CreateConVar('odysseyMovement_roll_maxVelocity', 600, 'The maximum velocity you can get from rolling')
+// convars
+CreateConVar('odysseyMovement_roll_maxVelocity', 450, 'The maximum velocity you can get from rolling')
 
 CreateConVar('odysseyMovement_walljump_launchVelocityAway', -250, 'The horizontal velocity you get when walljumping away from the wall')
 CreateConVar('odysseyMovement_walljump_launchVelocityUp', 250, 'The upwards velocity you get when walljumping away from the wall')
@@ -20,7 +18,7 @@ hook.Add('Move', 'OdyMove', function(ply, mv)
         jumped(ply,mv)
     end
 
-    -- if we press the use key
+    // if we press the use key
     if ply:KeyPressed(IN_USE) then
         use(ply, mv)
     end
@@ -36,7 +34,7 @@ hook.Add('Move', 'OdyMove', function(ply, mv)
 end)
 
 function inAir (ply, mv)
-    -- Check if we can walljump
+    // Check if we need to update the walljump
     if not ply:GetWallJumpUpdate() then
         timer.Simple(0.2, function()
             ply:SetWallJumpUpdate(true)
@@ -50,6 +48,7 @@ function landed (ply, mv)
 end
 
 function jumped (ply, mv)
+    // Walljump
     if ply:GetWallDirection() != Vector(0,0,0) then
         local vel = ply:GetWallDirection() * GetConVar('odysseyMovement_walljump_launchVelocityAway'):GetInt()
         vel.z = GetConVar('odysseyMovement_walljump_launchVelocityUp'):GetInt()
@@ -57,12 +56,17 @@ function jumped (ply, mv)
         ply:SetWallDirection(Vector(0,0,0))
 
     end
+
+    if not ply:IsOnGround() then return end
 end
 
 function use (ply, mv)
+    // Roll
     if ply:Crouching() and (ply:IsOnGround() or ply:GetRollUpdate()) then
         ply:SetRollTime(0)
-        ply:SetRollVelocity(math.min(GetConVar('odysseyMovement_roll_maxVelocity'):GetInt(), ply:GetRollVelocity() + 70))
+        ply:SetRollVelocity(
+            math.min(GetConVar('odysseyMovement_roll_maxVelocity'):GetInt(),
+             ply:GetRollVelocity() + 70))
 
         if not ply:GetRollUpdate() then
             ply:SetRollUpdate(true)
