@@ -79,7 +79,9 @@ function landed (ply, mv)
     if ply:GetIsGroundPounding() || ply:GetIsBonking() then
         ply:SetRollVelocity(GetConVar('odysseyMovement_roll_maxVelocity'):GetInt())
 
-        ply:EmitSound(poundLandSound)
+        if SERVER then
+            ply:EmitSound(poundLandSound)
+        end
 
         // Force crouch by +duck and -duck
         // TODO: need to find a way to force crouch without using concommands
@@ -121,8 +123,10 @@ function jumped (ply, mv)
         mv:SetVelocity(vel)
         ply:SetWallDirection(Vector(0,0,0))
 
-        ply:EmitSound(wallJumpSound)
-        ply:EmitSound(jumpSound)
+        if SERVER then
+            ply:EmitSound(wallJumpSound)
+            ply:EmitSound(jumpSound)
+        end
 
     end
 
@@ -136,8 +140,9 @@ function jumped (ply, mv)
         ply:ConCommand('-duck')
 
         mv:SetVelocity(Vector(0,0,450))
-
-        ply:EmitSound(poundJumpSound)
+        if SERVER then
+            ply:EmitSound(poundJumpSound)
+        end
         return
     end
 
@@ -152,7 +157,9 @@ function jumped (ply, mv)
             vec.z = GetConVar('odysseyMovement_backflip_height'):GetFloat() / len
 
             mv:SetVelocity(vec * len)
-            ply:EmitSound(poundJumpSound)
+            if SERVER then
+                ply:EmitSound(poundJumpSound)
+            end
             return
         elseif ply:KeyDown(IN_DUCK) then // Longjump
             len = GetConVar('odysseyMovement_longjump_distance'):GetFloat()
@@ -163,14 +170,18 @@ function jumped (ply, mv)
 
             ply:SetRollVelocity(GetConVar('odysseyMovement_roll_maxVelocity'):GetInt())
 
-            ply:EmitSound(longJumpSound)
+            if SERVER then
+                ply:EmitSound(longJumpSound)
+            end
 
             return
         end
 
     end
 
-    ply:EmitSound(jumpSound)
+    if SERVER then
+        ply:EmitSound(jumpSound)
+    end
 end
 
 function ducked (ply, mv)
@@ -185,7 +196,9 @@ function ducked (ply, mv)
         ply:SetIsGroundPounding(true)
         mv:SetVelocity(Vector(0,0,0))
 
-        ply:EmitSound(poundPreSound)
+        if SERVER then
+            ply:EmitSound(poundPreSound)
+        end
         timer.Simple(0.3, function()
             if not ply:GetIsDiving() then
                 ply:SetFreezePlayer(false)
@@ -222,7 +235,9 @@ function use (ply, mv)
         ply:ConCommand('-duck')
         ply:SetIsDiving(true)
 
-        ply:EmitSound(diveSound)
+        if SERVER then
+            ply:EmitSound(diveSound)
+        end
     end
 end
 
@@ -251,7 +266,7 @@ function wallJumpCheck (ply, mv)
 
     if tr.Hit then
         if (ply:GetIsLongJumping() || ply:GetIsDiving()) then
-            if not ply:GetIsBonking() then
+            if not ply:GetIsBonking() and SERVER then
                 ply:EmitSound(bonkSound)
             end
             mv:SetVelocity(wallDir * -50);
