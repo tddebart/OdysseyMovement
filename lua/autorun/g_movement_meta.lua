@@ -106,3 +106,15 @@ function PLAYER:SetIsGroundPounding(bool)
     self:SetDTBool(5, bool)
 end
 
+--#endregion
+
+--#region Bonk
+
+function PLAYER:GetIsBonking()
+    return self:GetDTBool(7)
+end
+
+function PLAYER:SetIsBonking(bool)
+    self:SetDTBool(7, bool)
+end
+

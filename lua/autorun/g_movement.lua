@@ -76,7 +76,7 @@ end
 function landed (ply, mv)
 
 
-    if ply:GetIsGroundPounding() then
+    if ply:GetIsGroundPounding() || ply:GetIsBonking() then
         ply:SetRollVelocity(GetConVar('odysseyMovement_roll_maxVelocity'):GetInt())
 
         ply:EmitSound(poundLandSound)
@@ -88,6 +88,7 @@ function landed (ply, mv)
 
         timer.Simple(0.7, function()
             ply:SetIsGroundPounding(false)
+            ply:SetIsBonking(false)
 
             ply:SetMaxSpeedOverride(0)
             ply:ConCommand('-duck')
@@ -125,7 +126,7 @@ function jumped (ply, mv)
 
     end
 
-    if not ply:IsOnGround() then return end
+    if not ply:IsOnGround() || ply:GetIsBonking() then return end
 
 
     // Ground pound jump
@@ -249,6 +250,16 @@ function wallJumpCheck (ply, mv)
     })
 
     if tr.Hit then
+        if (ply:GetIsLongJumping() || ply:GetIsDiving()) then
+            if not ply:GetIsBonking() then
+                ply:EmitSound(bonkSound)
+            end
+            mv:SetVelocity(wallDir * -50);
+            ply:SetMaxSpeedOverride(1)
+            ply:StopLoopingSound(loopId)
+            ply:SetIsBonking(true)
+        end
+
         if ply:GetWallDirection() == Vector(0,0,0) then
             if vel.z < 0 then vel.z = 0 end
             mv:SetVelocity(vel)

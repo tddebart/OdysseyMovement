@@ -73,7 +73,7 @@ sound.Add({
 sound.Add({
     name = "player_wallslide",
     channel = CHAN_STATIC,
-    volume = 1.0,
+    volume = 0.7,
     level = 80,
     sound = "player/WallSlide.mp3"
 })
