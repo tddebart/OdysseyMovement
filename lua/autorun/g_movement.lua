@@ -19,7 +19,11 @@ local poundJumpSound = Sound('player_pound_jump')
 local wallSlideSound = Sound('player_wallslide')
 local wallJumpSound = Sound('player_walljump')
 
+local capOffset = Vector(0,0,5)
+
 local loopId = 0
+
+local ourCappy = nil
 
 hook.Add('Move', 'OdyMove', function(ply, mv)
 
@@ -50,6 +54,10 @@ hook.Add('Move', 'OdyMove', function(ply, mv)
 
     if ply:GetWallJumpUpdate() then
         wallJumpCheck(ply, mv)
+    end
+
+    if ply:GetHitCap() then
+        capJump(ply, mv)
     end
 
     if ply:GetMaxSpeedOverride() != 0 then
@@ -102,6 +110,7 @@ function landed (ply, mv)
 
     ply:SetIsLongJumping(false)
     ply:SetIsDiving(false)
+    ply:SetCapJumped(false)
 
     if loopId != 0 then
         ply:StopLoopingSound(loopId)
@@ -122,6 +131,7 @@ function jumped (ply, mv)
         vel.z = GetConVar('odysseyMovement_walljump_launchVelocityUp'):GetInt()
         mv:SetVelocity(vel)
         ply:SetWallDirection(Vector(0,0,0))
+        ply:SetCapJumped(true)
 
         if SERVER then
             ply:EmitSound(wallJumpSound)
@@ -221,6 +231,8 @@ function use (ply, mv)
             ply:SetRollUpdate(true)
             roll(ply, mv)
         end
+
+        return
     // Dive
     elseif ply:GetIsGroundPounding() and not ply:IsOnGround() then
         ply:SetFreezePlayer(false)
@@ -238,7 +250,43 @@ function use (ply, mv)
         if SERVER then
             ply:EmitSound(diveSound)
         end
+
+        return
     end
+
+    createCappy(ply)
+
+end
+
+function createCappy (ply)
+
+    if IsValid(ourCappy) then return end
+
+    // Cappy
+    local cappy = ents.Create('cappy')
+
+    local pos = ply:EyePos() + Vector(0,0,5) + capOffset
+    local vec = ply:GetAimVector() * 200
+    local frac = util.TraceLine({
+        start = pos,
+        endpos = pos + vec,
+        filter = ply
+    }).Fraction
+
+    if frac <= 0.25 then return end
+
+    cappy:SetEndPos(pos + vec * frac + capOffset)
+    ply:SetIsLongJumping(false)
+
+
+    cappy:SetPos(pos)
+    cappy:SetOwner(ply)
+    -- debugoverlay.Line(pos, cappy:GetEndPos(), 15, Color(255,0,0), true)
+    cappy:SetIsFlying(true)
+    cappy:Spawn()
+
+    ourCappy = cappy
+
 end
 
 function wallJumpCheck (ply, mv)
@@ -284,6 +332,33 @@ function wallJumpCheck (ply, mv)
         ply:SetWallDirection(Vector(0,0,0))
         ply:StopLoopingSound(loopId)
     end
+end
+
+function capJump (ply, mv)
+
+    if ply:GetCapJumped() then return end
+
+    ply:ConCommand("+jump")
+    timer.Simple(FrameTime(), function()
+        ply:ConCommand("-jump")
+    end)
+
+    ply:SetIsDiving(false)
+    ply:SetIsLongJumping(false)
+
+    local vel = mv:GetVelocity()
+    if not ply:IsOnGround() then
+        ply:SetCapJumped(true)
+        vel = vel * 0.5
+    else
+        ply:SetCapJumped(false)
+    end
+
+    vel.z = 300
+    mv:SetVelocity(vel)
+
+
+    ply:SetHitCap(false)
 end
 
 function roll (ply, mv)

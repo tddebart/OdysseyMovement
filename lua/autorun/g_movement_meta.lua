@@ -118,3 +118,26 @@ function PLAYER:SetIsBonking(bool)
     self:SetDTBool(7, bool)
 end
 
+--#endregion
+
+
+--#region CapJump
+
+function PLAYER:GetCapJumped()
+    return self:GetDTBool(8)
+end
+
+function PLAYER:SetCapJumped(bool)
+    self:SetDTBool(8, bool)
+end
+
+function PLAYER:GetHitCap()
+    return self:GetDTBool(9)
+end
+
+function PLAYER:SetHitCap(bool)
+    self:SetDTBool(9, bool)
+end
+
+--#endregion
+
