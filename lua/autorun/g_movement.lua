@@ -260,7 +260,7 @@ end
 
 function createCappy (ply)
 
-    if IsValid(ourCappy) then return end
+    if IsValid(ourCappy) || CLIENT then return end
 
     // Cappy
     local cappy = ents.Create('cappy')
