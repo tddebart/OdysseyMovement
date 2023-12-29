@@ -111,7 +111,7 @@ function landed (ply, mv)
         // because then you can't use the crouch key to uncrouch
         ply:ConCommand('+duck')
 
-        timer.Simple(0.7, function()
+        timer.Create('OdyUnGround', 0.7, 1, function()
             ply:SetIsGroundPounding(false)
             ply:SetIsBonking(false)
 
@@ -160,6 +160,7 @@ function jumped (ply, mv)
 
     // Ground pound jump
     if ply:GetIsGroundPounding() then
+        timer.Stop('OdyUnGround')
         ply:SetIsGroundPounding(false)
         ply:SetMaxSpeedOverride(0)
         ply:ConCommand('-duck')
