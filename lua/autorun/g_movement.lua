@@ -69,6 +69,12 @@ hook.Add('Move', 'OdyMove', function(ply, mv)
         mv:SetMaxSpeed(maxSpeedOverride-1)
     end
 
+    if ply:GetIsGroundPounding() and ply:WaterLevel() > 0 then
+        ply:SetIsGroundPounding(false)
+        ply:SetMaxSpeedOverride(0)
+        ply:SetFreezePlayer(false)
+    end
+
     if ply:GetFreezePlayer() then
 
         return true
