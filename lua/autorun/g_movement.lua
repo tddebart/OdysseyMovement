@@ -1,5 +1,5 @@
 // convars
-CreateConVar('odysseyMovement_roll_maxVelocity', 450, 'The maximum velocity you can get from rolling')
+CreateConVar('odysseyMovement_roll_maxVelocity', 550, 'The maximum velocity you can get from rolling')
 
 CreateConVar('odysseyMovement_walljump_launchVelocityAway', -300, 'The horizontal velocity you get when walljumping away from the wall')
 CreateConVar('odysseyMovement_walljump_launchVelocityUp', 300, 'The upwards velocity you get when walljumping away from the wall')
