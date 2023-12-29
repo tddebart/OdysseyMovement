@@ -72,6 +72,12 @@ hook.Add('Move', 'OdyMove', function(ply, mv)
     end
 end)
 
+hook.Add('GetFallDamage', 'OdyBlockFallDamage', function(ply, speed)
+    if ply:GetIsGroundPounding() then
+        return 0
+    end
+end)
+
 function inAir (ply, mv)
     // Check if we need to update the walljump
     if not ply:GetWallJumpUpdate() then
@@ -281,7 +287,7 @@ function createCappy (ply)
 
     cappy:SetPos(pos)
     cappy:SetOwner(ply)
-    -- debugoverlay.Line(pos, cappy:GetEndPos(), 15, Color(255,0,0), true)
+    // debugoverlay.Line(pos, cappy:GetEndPos(), 15, Color(255,0,0), true)
     cappy:SetIsFlying(true)
     cappy:Spawn()
 
@@ -338,9 +344,9 @@ function capJump (ply, mv)
 
     if ply:GetCapJumped() then return end
 
-    ply:ConCommand("+jump")
+    ply:ConCommand('+jump')
     timer.Simple(FrameTime(), function()
-        ply:ConCommand("-jump")
+        ply:ConCommand('-jump')
     end)
 
     ply:SetIsDiving(false)
