@@ -4,7 +4,7 @@ AddCSLuaFile('cl_init.lua')
 local capOffset = Vector(0,0,5)
 
 function ENT:Initialize()
-    self:SetModel("models/props_mario/MarioCap.mdl")
+    self:SetModel("models/MarioCap.mdl")
     -- self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_CUSTOM)
     self:SetSolid(SOLID_NONE)

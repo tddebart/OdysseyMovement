@@ -1,5 +1,5 @@
 {
-    "title": "Odyssey Movement",
+    "title": "Super Mario Odyssey Movement SWEP",
     "description": "",
     "type": "servercontent",
     "tags": [
@@ -7,6 +7,8 @@
     ],
     "ignore": [
         ".git/*",
-        "README.md"
+        "README.md",
+        "icon.png",
+        "icon_small.png"
     ]
 }
