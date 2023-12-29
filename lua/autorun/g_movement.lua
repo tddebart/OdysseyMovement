@@ -26,6 +26,9 @@ local loopId = 0
 local ourCappy = nil
 
 hook.Add('Move', 'OdyMove', function(ply, mv)
+    if not ply:GetOdyEnabled() then
+        return
+    end
 
     if not ply:GetPreviousIsOnGround() and ply:IsOnGround() then
         landed(ply,mv)
@@ -132,7 +135,7 @@ end
 
 function jumped (ply, mv)
     // Walljump
-    if ply:GetWallDirection() != Vector(0,0,0) and not ply:GetIsGroundPounding() then
+    if ply:GetWallDirection() != Vector(0,0,0) and not ply:GetIsGroundPounding() and not ply:IsOnGround() then
         local vel = ply:GetWallDirection() * GetConVar('odysseyMovement_walljump_launchVelocityAway'):GetInt()
         vel.z = GetConVar('odysseyMovement_walljump_launchVelocityUp'):GetInt()
         mv:SetVelocity(vel)

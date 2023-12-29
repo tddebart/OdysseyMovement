@@ -141,3 +141,15 @@ end
 
 --#endregion
 
+--#region Ody Enabled
+
+function PLAYER:GetOdyEnabled()
+    return self:GetDTBool(10)
+end
+
+function PLAYER:SetOdyEnabled(bool)
+    self:SetDTBool(10, bool)
+end
+
+--#endregion
+
