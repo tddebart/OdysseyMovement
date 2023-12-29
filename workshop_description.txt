@@ -26,6 +26,11 @@ Movelist:
     [*]Bonk - [b]Dive[/b] into a wall (Not really a move)
 [/list]
 
+Known Issues:
+[list]
+    [*]Cappy is missing his eyes, this is because the game has a separate model for the eyes so i need to stich it together
+[/list]
+
 Cappy model and Mario sounds belong to Nintendo©
 
 Open to feedback and please report bugs

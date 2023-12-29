@@ -42,7 +42,7 @@ function ENT:Think()
     end
 
     local ang = self:GetAngles()
-        ang:RotateAroundAxis(ang:Up(), 400 * FrameTime())
+        ang:RotateAroundAxis(-ang:Up(), 400 * FrameTime())
         self:SetAngles(ang)
 
     // Check if the entity is close enough to the end position
