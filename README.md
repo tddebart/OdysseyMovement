@@ -33,6 +33,8 @@ Known Issues:
 
 - Cappy is missing his eyes, this is because the game has a separate model for the eyes so i need to stich it together
 
+Source code on github: https://github.com/tddebart/OdysseyMovement
+Steam Workshop addon: https://steamcommunity.com/sharedfiles/filedetails/?id=3125850469
 
 Cappy model and Mario sounds belong to Nintendo©
 
