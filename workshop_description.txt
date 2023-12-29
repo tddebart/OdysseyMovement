@@ -1,0 +1,31 @@
+[h3]A movement SWEP that recreates the movement from Super Mario Odyssey[/h3]
+
+This is a port of [url=https://youtu.be/3KIy7M2-Ue4]PortalRunner's[/url] Portal 2 mod with a couple of addition like audio and some Gmod related bug fixes.
+
+To enable the movement get the weapon from the weapons other tab. The SWEP is called "odyssey movement toggle" and you can toggle it on and off with left click.
+
+Controls:
+[list]
+    [*][b]Crouch/Duck(Ctrl)[/b] - Crouch
+    [*][b]Use(e)[/b] - Throw cappy
+    [*][b]Jump(Space)[/b] - Jump
+[/list]
+
+These controls are similar to Super Mario Odyssey with [b]Jump[/b] being [b]B/A[/b], [b]Use[/b] being [b]Y[/b] and [b]Crouch[/b] being [b]ZL[/b]
+
+Movelist:
+[list]
+    [*]Jump
+    [*]Long jump - Run then [b]Crouch[/b] + [b]Jump[/b]
+    [*]Wall jump - While in the air [b]Jump[/b] while facing a wall
+    [*]Roll - While holding [b]Crouch[/b], spam [b]Use[/b] and you start rolling
+    [*]Ground Pound - While in the air [b]Crouch[/b]
+    [*]Ground Pound Jump - [b]Ground Pound[/b] then jump when you hit the floor and you jump higher than normal
+    [*]Dive - [b]Ground Pound[/b] then [b]Use[/b] to dive out of it
+    [*]Backflip - While standing still [b]Crouch[/b] + [b]Jump[/b]
+    [*]Bonk - [b]Dive[/b] into a wall (Not really a move)
+[/list]
+
+Cappy model and Mario sounds belong to Nintendo©
+
+Open to feedback and please report bugs
