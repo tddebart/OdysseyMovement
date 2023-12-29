@@ -31,8 +31,14 @@ function SWEP:PrimaryAttack()
       ply:SetOdyEnabled(!ply:GetOdyEnabled())
    end
    if ply:GetOdyEnabled() then
+      if SERVER then
+         ply:SetJumpPower(250)
+      end
       self:DisplayMessage("Odysey movement enabled")
    else
+      if SERVER then
+         ply:SetJumpPower(200)
+      end
       self:DisplayMessage("Odysey movement disabled")
    end
 end
