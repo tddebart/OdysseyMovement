@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	$basetexture "models/MarioCapHighMesh_alb"
+	$alphatest "1"
+	$bumpmap "models/MarioCapHighMesh_nrm"
+}

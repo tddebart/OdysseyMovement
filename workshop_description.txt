@@ -26,6 +26,16 @@ Movelist:
     [*]Bonk - [b]Dive[/b] into a wall (Not really a move)
 [/list]
 
+Convars:
+[list]
+    [*][b]odysseyMovement_backflip_height[/b]               default:400
+    [*][b]odysseyMovement_longjump_distance[/b]             default:300
+    [*][b]odysseyMovement_longjump_height[/b]               default:600
+    [*][b]odysseyMovement_roll_maxVelocity[/b]              default:550
+    [*][b]odysseyMovement_walljump_launchVelocityAway[/b]   default:-300
+    [*][b]odysseyMovement_walljump_launchVelocityUp[/b]     default:300
+[/list]
+
 Known Issues:
 [list]
     [*]Cappy is missing his eyes, this is because the game has a separate model for the eyes so i need to stich it together

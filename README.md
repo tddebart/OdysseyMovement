@@ -28,6 +28,14 @@ Movelist:
 - Backflip - While standing still **Crouch** + **Jump**
 - Bonk - **Dive** into a wall (Not really a move)
 
+Convars:
+
+- **odysseyMovement_backflip_height**               default:400
+- **odysseyMovement_longjump_distance**             default:300
+- **odysseyMovement_longjump_height**               default:600
+- **odysseyMovement_roll_maxVelocity**              default:550
+- **odysseyMovement_walljump_launchVelocityAway**   default:-300
+- **odysseyMovement_walljump_launchVelocityUp**     default:300
 
 Known Issues:
 
