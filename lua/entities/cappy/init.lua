@@ -1,11 +1,12 @@
-include('shared.lua')
 AddCSLuaFile('cl_init.lua')
+AddCSLuaFile('shared.lua')
+
+include('shared.lua')
 
 local capOffset = Vector(0,0,5)
 
 function ENT:Initialize()
     self:SetModel("models/MarioCap.mdl")
-    -- self:PhysicsInit(SOLID_VPHYSICS)
     self:SetMoveType(MOVETYPE_CUSTOM)
     self:SetSolid(SOLID_NONE)
     self:SetGravity(0)
@@ -13,11 +14,6 @@ function ENT:Initialize()
     self:SetStartPos(self:GetPos())
 
     self:Activate()
-
-    local phys = self:GetPhysicsObject()
-    if phys:IsValid() then
-        -- phys:Wake()
-    end
 
     // Remove the entity after 20 seconds
     timer.Simple(20, function()
@@ -36,14 +32,12 @@ function ENT:Think()
         local speed = 400
         local newPos = pos + dir * speed * FrameTime()
         self:SetPos(newPos)
-
-        // Spin the model
-
     end
 
+    // Spin the model
     local ang = self:GetAngles()
-        ang:RotateAroundAxis(-ang:Up(), 400 * FrameTime())
-        self:SetAngles(ang)
+    ang:RotateAroundAxis(-ang:Up(), 400 * FrameTime())
+    self:SetAngles(ang)
 
     // Check if the entity is close enough to the end position
     if self:GetPos():Distance(self:GetEndPos()) < 5 and self:GetIsFlying(true) then

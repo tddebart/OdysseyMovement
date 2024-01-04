@@ -1,8 +1,5 @@
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
-
-ENT.PrintName = "Custom"
-
+ENT.PrintName = "Cappy"
 ENT.Spawnable = true
-
 ENT.AutomaticFrameAdvance = true
