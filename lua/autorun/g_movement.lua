@@ -30,6 +30,10 @@ hook.Add('Move', 'OdyMove', function(ply, mv)
         return
     end
 
+    if ply:GetMoveType() == MOVETYPE_NOCLIP then
+        return
+    end
+
     if not ply:GetPreviousIsOnGround() and ply:IsOnGround() then
         landed(ply,mv)
     elseif not ply:IsOnGround() then

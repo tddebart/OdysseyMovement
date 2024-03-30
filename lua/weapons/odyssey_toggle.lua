@@ -7,8 +7,10 @@ SWEP.Spawnable = true
 SWEP.AdminOnly = false
 SWEP.DrawAmmo = false
 SWEP.UseHands = true
-SWEP.ViewModel = "models/weapons/c_pistol.mdl"
-SWEP.WorldModel = "models/weapons/w_pistol.mdl"
+SWEP.ViewModel = Model( "models/weapons/c_arms.mdl" )
+SWEP.WorldModel = ""
+
+SWEP.Primary.Ammo = "none"
 
 function SWEP:Initialize()
    self:SetHoldType("normal")

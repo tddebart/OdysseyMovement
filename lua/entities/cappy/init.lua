@@ -6,7 +6,7 @@ include('shared.lua')
 local capOffset = Vector(0,0,5)
 
 function ENT:Initialize()
-    self:SetModel("models/MarioCap.mdl")
+    self:SetModel('models/MarioCap.mdl')
     self:SetMoveType(MOVETYPE_CUSTOM)
     self:SetSolid(SOLID_NONE)
     self:SetGravity(0)
